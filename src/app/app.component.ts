@@ -11,9 +11,12 @@ export class AppComponent {
   name = 'Angular';
 
   createObservable() {
-    let numbers = [3, 4, 5];
+    let numbers = [3, 4, 100, 5];
     let numbers$ = Observable.create((observer: any) => {
       for (let n of numbers) {
+        if (n>10){
+          observer.error('trop grand');
+        }
         observer.next(n);
       }
       observer.complete();
