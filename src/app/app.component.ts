@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 // import { MyCustomObserver } from './mycustomobserver';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/mapto';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'my-app',
@@ -12,29 +12,10 @@ export class AppComponent {
   name = 'Angular';
 
   createObservable() {
-    let numbers = [3, 4, 5];
-    // let numbers$ = Observable.create((observer: any) => {
-    //   for (let n of numbers) {
-    //     observer.next(n);
-    //   }
-    //   observer.complete();
-    // });
-    // numbers$.subscribe(
-    //   (val: any) => console.log(val),
-    //   (err: any) => console.log(err),
-    //   () => console.log('Complete !')
-    // )
-    let numbers$ = Observable.from(numbers);
-    let myOtherNumbers$ = numbers$.mapTo ( "blah" );
+    let interval$ = Observable.interval(1000).take(5);
 
-    let sub = numbers$.subscribe(
-      (val: any) => console.log(val),
-      (err: any) => console.log(err),
-      () => console.log('complete')
-    );
-
-    let sub2 = myOtherNumbers$.subscribe(
-      (val: any) => console.log(val),
+    let sub = interval$.subscribe(
+      (val: any) => console.log('et', val),
       (err: any) => console.log(err),
       () => console.log('complete')
     );
