@@ -11,13 +11,17 @@ export class AppComponent {
   name = 'Angular';
 
   createObservable() {
-    let numbers = [1, 2, 3];
-    let numbers$ = Observable.from(numbers);
-
+    let numbers = [3, 4, 5];
+    let numbers$ = Observable.create((observer: any) => {
+      for (let n of numbers) {
+        observer.next(n);
+      }
+      observer.complete();
+    });
     numbers$.subscribe(
-      val => console.log(`valeur : ${val}`),
-      err => console.log(`erreur : ${err}`),
-      () => console.log(`Complete !`)
-    );
+      (val: any) => console.log(val),
+      (err: any) => console.log(err),
+      () => console.log('Complete !')
+    )
   }
 }
