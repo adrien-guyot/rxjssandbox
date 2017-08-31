@@ -14,6 +14,10 @@ export class AppComponent {
     let numbers = [1, 2, 3];
     let numbers$ = Observable.from(numbers);
 
-    numbers$.subscribe(new MyCustomObserver());
+    numbers$.subscribe(
+      val => console.log(`valeur : ${val}`),
+      err => console.log(`erreur : ${err}`),
+      () => console.log(`Complete !`)
+    );
   }
 }
