@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 // import { MyCustomObserver } from './mycustomobserver';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/operator/take';
+import 'rxjs/add/observable/fromevent';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 @Component({
   selector: 'my-app',
@@ -12,10 +13,13 @@ export class AppComponent {
   name = 'Angular';
 
   createObservable() {
-    let interval$ = Observable.interval(1000).take(5);
-
-    let sub = interval$.subscribe(
-      (val: any) => console.log('et', val),
+    let click$ = Observable.fromEvent(document, 'click');
+    let coords$ = click$
+      .do(data=> console.log('avant map', data))
+      .map(evt => ({ x: evt.clientX, y: evt.clientY }))
+      .do(data=> console.log('après map', data));
+    let sub = coords$.subscribe(
+      (val: any) => console.log(val),
       (err: any) => console.log(err),
       () => console.log('complete')
     );
