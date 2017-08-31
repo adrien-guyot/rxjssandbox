@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 // import { MyCustomObserver } from './mycustomobserver';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'my-app',
@@ -24,8 +25,15 @@ export class AppComponent {
     //   () => console.log('Complete !')
     // )
     let numbers$ = Observable.from(numbers);
+    let myOtherNumbers$ = numbers$.map ( x => x * 10);
 
     let sub = numbers$.subscribe(
+      (val: any) => console.log(val),
+      (err: any) => console.log(err),
+      () => console.log('complete')
+    );
+
+    let sub2 = myOtherNumbers$.subscribe(
       (val: any) => console.log(val),
       (err: any) => console.log(err),
       () => console.log('complete')
