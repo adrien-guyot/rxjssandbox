@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromevent';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'my-app',
@@ -15,10 +16,9 @@ export class AppComponent {
   createObservable() {
     let click$ = Observable.fromEvent(document, 'click');
     let coords$ = click$
-      .do(data=> console.log('avant map', data))
-      .map(evt => ({ x: evt.clientX, y: evt.clientY }))
-      .do(data=> console.log('après map', data));
-    let sub = coords$.subscribe(
+      .map(evt => ({ x: evt.clientX, y: evt.clientY }));
+    let lefty$ = coords$.filter(obj => obj.x<200);
+    let sub = lefty$.subscribe(
       (val: any) => console.log(val),
       (err: any) => console.log(err),
       () => console.log('complete')
