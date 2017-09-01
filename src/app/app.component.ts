@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import 'rxjs/add/observable/fromevent';
 import 'rxjs/add/operator/mapTo';
@@ -13,8 +12,8 @@ import 'rxjs/add/operator/merge';
   <button id="like">J'aime</button>
   <button id="dislike">J'aime pas</button>
   <br>
-  <div>nombre de likes: 
-    <div *ngIf="show == true">{{counter}}</div>
+  <br>
+  <div>nombre de likes: {{counter}}
   </div>`,
 })
 export class AppComponent implements OnInit {
