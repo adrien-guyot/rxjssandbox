@@ -1,27 +1,48 @@
 import { Component } from '@angular/core';
-// import { MyCustomObserver } from './mycustomobserver';
 import { Observable } from 'rxjs/Observable';
+import { OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+
 import 'rxjs/add/observable/fromevent';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/merge';
 
 @Component({
   selector: 'my-app',
-  template: `<h1>Hello {{name}}</h1><button (click)="createObservable()">Créer un observable</button>`,
+  template: `<h1>Hello {{name}}</h1>
+  <button id="like">J'aime</button>
+  <button id="dislike">J'aime pas</button>
+  <br>
+  <div>nombre de likes: 
+    <div *ngIf="show == true">{{counter}}</div>
+  </div>`,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   name = 'Angular';
+  counter: number = 0;
+  show: boolean = true;
+  constructor() { }
 
-  createObservable() {
-    let click$ = Observable.fromEvent(document, 'click');
-    let coords$ = click$
-      .map(evt => ({ x: evt.clientX, y: evt.clientY }));
-    let lefty$ = coords$.filter(obj => obj.x<200);
-    let sub = lefty$.subscribe(
-      (val: any) => console.log(val),
+  ngOnInit() {
+    let like = document.getElementById('like');
+    let dislike = document.getElementById('dislike');
+
+    let like$ = Observable.fromEvent(like, 'click').mapTo(parseFloat("1"));
+    let dislike$ = Observable.fromEvent(dislike, 'click').mapTo(parseFloat("-1"));
+
+    let opinion$ = like$.merge(dislike$);
+
+    let resultsCounter = opinion$.subscribe(
+      (val: any) => {
+        if (this.counter === 0 && val === -1) {
+          this.counter = 0;
+        } else {
+          this.counter += val;
+        }
+      },
       (err: any) => console.log(err),
       () => console.log('complete')
     );
   }
 }
+
